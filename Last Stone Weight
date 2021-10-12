@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int lastStoneWeight(vector<int>& stones) 
+    {
+        priority_queue<int> pq;//Max Heap
+        
+        for(int i=0;i<stones.size();i++)
+        {
+            pq.push(stones[i]);// Insert Values of all stones in max heap
+        }
+        while(!pq.empty())
+        {
+            if(pq.size()==1)// if heap size is 1 then return heap top 
+                return pq.top();
+            
+            int first=pq.top();//pop first stone
+            pq.pop();
+            
+            int second=pq.top();// pop second stone
+            pq.pop();
+            
+            if(first!=second)// insert again the remaining value
+                pq.push(first-second);
+            
+        }
+      return 0;//else case 
+    }
+};
