@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int dp[101][101];
+    int dfs(vector<int> &cuts, int start,int end,int left,int right)
+    {
+        if(start>=end)// start and end represents the ENDS of cuts array
+            return 0;
+        
+        else if(dp[start][end]!=-1)
+            return dp[start][end];
+        
+        else
+        {
+            int ans=INT_MAX;// Initialize with Maximum value
+            
+    for(int i=start;i<end;i++)
+        ans=min(ans,right-left+dfs(cuts,start,i,left,cuts[i])+dfs(cuts,i+1,end,cuts[i],right));
+            
+            return dp[start][end]=ans;
+        }   
+    }
+    
+    int minCost(int n, vector<int>& cuts) 
+    {
+       sort(cuts.begin(),cuts.end());// sort the cuts array
+        memset(dp,-1,sizeof(dp));//filling the dp table by -1 initially
+        
+        return dfs(cuts,0,cuts.size(),0,n);
+    }
+};
