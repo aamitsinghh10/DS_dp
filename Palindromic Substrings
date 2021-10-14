@@ -1,0 +1,39 @@
+class Solution {
+public:
+    int countSubstrings(string s) 
+    {
+        int n=s.size();
+        
+        vector<vector<int>> dp(n,vector<int> (n,0));// creating an table 
+        int count=0;
+        
+        for(int gap=0;gap<n;gap++)// gap represents diagonals
+        {
+            for(int i=0,j=gap;j<n;i++,j++)// i is for row and j is for cols
+            {
+                if(gap==0)//for single char substring 
+                {
+                    dp[i][j]=1;
+                    count++;
+                }
+                else if(gap==1)//for 2 characters substring like "bc","aa"
+                {
+                    if(s[i]==s[j])// when both the chars are equal
+                    {
+                        dp[i][j]=1;
+                        count++;
+                    }
+                }
+                else
+                {
+                    if(s[i]==s[j] && dp[i+1][j-1]==1)// 2 cases first is boundary chars are equal and second is middle substring is also palindrome
+                    {
+                        dp[i][j]=1;
+                        count++;
+                    }
+                }
+            }
+        }
+        return count;
+    }
+};
