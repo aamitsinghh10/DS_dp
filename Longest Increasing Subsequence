@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int lengthOfLIS(vector<int>& nums) 
+    {
+        int n=nums.size();
+        
+        int lis[n];//create an lis array
+        
+        memset(lis,0,sizeof(lis));//filling lis array
+        
+        lis[0]=1;
+        
+        for(int i=1;i<n;i++)
+        {
+            lis[i]=1;
+            for(int j=0;j<n;j++)
+            {
+                if(nums[i]>nums[j] && lis[i]<lis[j]+1)
+                {
+                    lis[i]=lis[j]+1;
+                }
+            }
+        }
+        int maximum=INT_MIN;
+       
+        for(int i=0;i<n;i++)// to calculate maximum element in lis array
+        {
+            maximum=max(maximum,lis[i]);
+        }
+        return maximum;
+    }
+};
