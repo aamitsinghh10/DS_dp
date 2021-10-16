@@ -1,0 +1,30 @@
+class Solution {
+public:
+    int MCM(vector<vector<int>>& mem, int egg,int floor)
+    {
+        if(floor==0 || floor==1)
+            return floor;
+        
+        if(egg==1)
+            return floor;
+        if(mem[egg][floor]!=-1)
+            return mem[egg][floor];
+        
+        int mn=INT_MAX;
+        
+        for(int k=1;k<=floor;k++)
+        {
+            //Here max is finding because we are Calculating number of Attempts in worst case
+            int temp=1+max(MCM(mem,egg-1,k-1),MCM(mem,egg,floor-k));//first condition is when the egg is break and other is when the egg is not break
+            
+            mn=min(mn,temp);
+        }
+        return mem[egg][floor]=mn;
+    }
+    int superEggDrop(int k, int n) 
+    {
+       vector<vector<int>> mem(k+1,vector<int> (n+1,-1));
+        
+       return MCM(mem,k,n);
+    }
+};
