@@ -1,0 +1,40 @@
+class Solution {
+public:
+    int solve(int e,int f,vector<vector<int>>& mem)
+    {
+        if(f==0 || f==1) 
+            return f;
+        if(e==1) 
+            return f;
+        
+        if(mem[e][f]!= -1) 
+            return mem[e][f];
+        
+        int mn=INT_MAX,low=0,high=f,temp=0;
+        
+        while(low<=high)
+        {
+            
+            int mid=low+(high-low)/2;
+            
+            int left=solve(e-1,mid-1,mem);//when the egg breaks 
+            int right=solve(e,f-mid,mem);//when egg is not break
+            
+            temp=1+max(left,right);
+            
+            if(right>left) //As we want first threshold floor we move upwards
+                low=mid+1;
+            else 
+                high=mid-1;//move to the downward
+    
+            mn = min(mn,temp); //minimum number of attempts
+        }
+        return mem[e][f]=mn;
+    }
+    int superEggDrop(int k, int n) 
+    {
+        //k means number of eggs, n means number of floors
+        vector<vector<int>> mem(k+1,vector<int>(n+1,-1));
+        return solve(k, n, mem);
+    }
+};
