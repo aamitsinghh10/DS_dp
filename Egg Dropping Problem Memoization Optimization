@@ -1,0 +1,47 @@
+class Solution {
+public:
+    int solve(vector<vector<int>>& mem, int e,int f)
+    {
+        if(f==0 || f==1)
+            return f;
+        
+        if(e==1)
+            return f;
+        
+        if(mem[e][f]!=-1)
+            return mem[e][f];
+        int low=0,high=0;
+        
+          int mn=INT_MAX;
+        for(int k=1;k<=f;k++)
+        {
+            if(mem[e-1][k-1]!=-1)
+               low=mem[e-1][k-1];//check on table if present then store it on low otherwise
+            else
+            {
+               low=solve(mem,e-1,k-1);
+               mem[e-1][k-1]=low;
+            }
+        
+            if(mem[e][f-k]!=-1)
+               high= mem[e][f-k];
+            else
+            {
+               high=solve(mem,e,f-k);
+               mem[e][f-k]=high;
+            }
+        
+            //Here max is finding because we are Calculating number of Attempts in worst case
+            int temp=1+max(low,high);//first condition is when the egg is break and other is when the egg is not break
+            
+            mn=min(mn,temp);
+        }
+        return mem[e][f]=mn;
+    }
+    int superEggDrop(int k, int n) 
+    {
+       vector<vector<int>> mem(k+1,vector<int> (n+1,-1));
+        
+       return solve(mem,k,n);
+    }
+};
