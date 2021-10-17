@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int mem[3][1001];
+    int solve(int e,int f)
+    {
+        if(f==0 || f==1)//when their is floor value 0 and 1
+            return f;
+        if(e==1)//when their is only one egg
+            return f;
+        
+        if(mem[e][f]!=-1)
+            return mem[e][f];
+        
+        int mn=INT_MAX;
+        
+        for(int k=1;k<=f;k++)
+        {
+            //Here max value of temp is finding because we are calculating number of attempts in worst case
+            int temp=1+max(solve(e-1,k-1),solve(e,f-k));// here first case is when egg breaks and second case is when egg doesn't breaks
+            
+            mn=min(mn,temp);//finding minimum number of attempts
+        }
+        return mem[e][f]=mn;
+    }
+    int twoEggDrop(int n) 
+    { 
+        memset(mem,-1,sizeof(mem));
+        
+        return solve(2,n);//2 eggs the given
+    }
+};
