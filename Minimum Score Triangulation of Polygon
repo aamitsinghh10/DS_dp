@@ -1,0 +1,28 @@
+class Solution {
+public:
+    int MCM(vector<int> &values,int left,int right,vector<vector<int>> &mem)//Matrix Chain Multiplication
+    {
+        if(left>=right)//
+            return 0;
+        
+        if(mem[left][right]!=-1)
+            return mem[left][right];
+        
+        int minscore=INT_MAX;
+        
+        for(int k=left;k<right;k++)
+        {
+            int total_score=MCM(values,left,k,mem)+MCM(values,k+1,right,mem)+values[left-1]*values[k]*values[right];
+            
+            minscore=min(minscore,total_score);
+        }
+        return mem[left][right]=minscore;
+    }
+    int minScoreTriangulation(vector<int>& values)
+    {
+        int n=values.size();
+        vector<vector<int>> mem(n+1,vector<int>(n+1,-1));
+        
+        return MCM(values,1,n-1,mem);
+    }
+};
