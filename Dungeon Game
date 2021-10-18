@@ -1,0 +1,37 @@
+class Solution {
+public:
+    int calculateMinimumHP(vector<vector<int>>& dungeon)
+    {
+        int rows=dungeon.size();//row size
+        int cols=dungeon[0].size();//column size
+        
+        vector<vector<int>> dp(rows,vector<int> (cols,0));//creating dp table same as size of dungeon
+        
+        //Using Bottom-Up Approach
+        
+        for(int i=rows-1;i>=0;i--)
+        {
+            for(int j=cols-1;j>=0;j--)
+            {
+                if(i==rows-1 && j==cols-1)
+                {
+                    dp[i][j]=min(0,dungeon[i][j]);//we don't take positive values
+                }
+                else if(i==rows-1)//whenever we are in last row
+                {
+                    dp[i][j]=min(0,dungeon[i][j]+dp[i][j+1]);//adding current dungeon value and right
+                }
+                else if(j==cols-1)
+                {
+                    dp[i][j]=min(0,dungeon[i][j]+dp[i+1][j]);
+                }
+                else
+                {
+                    dp[i][j]=min(0,dungeon[i][j]+max(dp[i+1][j],dp[i][j+1]));
+                }
+                
+            }
+        }
+        return abs(dp[0][0])+1;
+    }
+};
