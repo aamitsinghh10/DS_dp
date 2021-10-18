@@ -1,0 +1,42 @@
+class Solution {
+public:
+    int dfs(vector<vector<int>> &grid,int i,int j,int steps,int count)
+    {
+        if(i<0 || j<0 || i>=grid.size() || j>=grid[0].size() || grid[i][j]==-1)//Invalid Case
+            return 0;
+        
+        if(grid[i][j]==2)//when reaching to destination
+            return steps==count?1:0;//if number of steps is equal to count return 1 else zero 
+        
+        grid[i][j]=-1;//mark as visited
+        
+        int path=dfs(grid,i+1,j,steps+1,count)+dfs(grid,i-1,j,steps+1,count)+
+                 dfs(grid,i,j+1,steps+1,count)+dfs(grid,i,j-1,steps+1,count);//paths to reach the destination
+        
+        grid[i][j]=0;//backtacking and mark as available
+        
+        return path;
+        
+    }
+    int uniquePathsIII(vector<vector<int>>& grid) 
+    {
+        int starti=0,startj=0, count=0;//count holds value of number of empty cells
+        //starti and startj is start of grid
+        
+        for(int i=0;i<grid.size();i++)
+        {
+            for(int j=0;j<grid[0].size();j++)
+            {
+                if(grid[i][j]==1)
+                {
+                    starti=i;
+                    startj=j;
+                }
+                if(grid[i][j]!=-1)//when their is not any obstacle and cell is empty
+                    count++;
+            }
+        }
+        return dfs(grid,starti,startj,1,count);
+        
+    }
+};
