@@ -1,0 +1,27 @@
+class Solution {
+public:
+    int maxEnvelopes(vector<vector<int>>& envelopes)
+    {
+         int n=envelopes.size();
+    if(n==0)//when size is zero
+        return 0;
+   
+   sort(envelopes.begin(),envelopes.end());//Sorting in Ascending order of width
+   
+    vector<int> lis(n,1);//filling lis array with 1 initially
+    int max=1;
+    for(int i=1;i<n;i++)
+    {
+        for(int j=0;j<i;j++)
+        {
+        if(envelopes[i][0]>envelopes[j][0] && envelopes[i][1]>envelopes[j][1] && lis[i]<lis[j]+1) //height and width of first envelope is
+        smaller than 2nd envelope and third condition is lis condition
+                
+            lis[i]=lis[j]+1;
+            if(max<lis[i])//calculating maximum envelopes
+                max=lis[i];
+        }
+    }
+    return max;
+    }
+};
