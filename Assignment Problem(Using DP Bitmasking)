@@ -1,0 +1,17 @@
+int dp[1<<N] = {INT_MAX};
+dp[0]=0;//No Assignment Case
+
+for(int mask=0;mask<(1<<N);mask++)
+{
+   x=__builtin_popcount(mask);//Count Set Bits (Person number represented by x)
+   
+   for(int j=0;j<N;j++)
+   {
+      if(mask & (1<<j)==0)
+      {
+          dp[mask | (1<<j)] = min(dp[mask | (1<<j)],dp[mask]+cost[x][j]);
+      }
+   }
+   return dp[(1<<N)-1];
+}
+//TC-O(N.2^N)
