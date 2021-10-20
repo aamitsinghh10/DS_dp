@@ -1,0 +1,39 @@
+class Solution {
+public:
+    vector<string> wordBreak(string s, vector<string>& wordDict) 
+    {
+        vector<string> result;
+        unordered_set<string> st;
+        
+        for(auto word:wordDict)
+         st.insert(word);
+            
+        // To store Current String
+        string curr="";
+        solve(0,s,curr,st,result);
+        
+        return result;
+    }
+    void solve(int index,string s, string curr,unordered_set<string> &st,vector<string> &res)
+    {
+       if(index==s.length())
+        {
+            //we have reached end
+            curr.pop_back(); 
+           //whenever curr string matches with any word of worddict push it on result and pop_back
+            res.push_back(curr);
+        }
+        string str="";
+        for(int i=index;i<s.length();i++)
+        {
+            //get every substring and check if it exists in set
+            str.push_back(s[i]);
+            if(st.count(str))
+            {
+                //we have got a word in dict 
+                //explore more and get other substrings
+                solve(i+1,s,curr+str+" ",st,res);
+            }
+        }
+    }
+};
