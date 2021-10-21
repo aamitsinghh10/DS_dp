@@ -1,0 +1,50 @@
+class Solution {
+public:
+    bool isMatch(string s, string p) 
+    {
+        int m=s.size();//string length
+        int n=p.size();//pattern length
+        
+        vector<vector<bool>> dp(n+1,vector<bool> (m+1,false));//creating a dp table
+        
+        dp[0][0]=true;//when both string and pattern the empty then they match
+        
+        for(int j=1;j<=m;j++)//all other values at i==0 is false
+        {
+            dp[0][j]=false;
+        }
+        for(int i=1;i<=n;i++)// for pattern case 
+        {
+            if(p[i-1]=='*')// when their is * in row then just fill it according to previous element
+            {
+                dp[i][0]=dp[i-1][0];
+            }
+            else
+            {
+                dp[i][0]=false;//otherwise mark it as false
+            }
+        } 
+        for(int i=1;i<=n;i++)//for all other values of the table
+        {
+            for(int j=1;j<=m;j++)
+            {
+                if(p[i-1]==s[j-1])// when char of string and pattern matches
+                {
+                    dp[i][j]=dp[i-1][j-1];//take the previous diagonal value
+                }
+                else if(p[i-1]=='?')//when ? is in pattern which exactly matches with only 1 character then it this also in previous diagonal
+                {
+                    dp[i][j]=dp[i-1][j-1];
+                }
+                else if(p[i-1]=='*')// when 8 is in pattern which may denote empty value as well any number of chars
+                {
+                    dp[i][j]=dp[i-1][j] || dp[i][j-1];//check on horizontal and or with vertical
+                }
+                else{
+                    dp[i][j]=false;//other wise mark as false
+                }
+            }
+        }
+        return dp[n][m];
+    }
+};
