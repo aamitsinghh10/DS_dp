@@ -1,0 +1,39 @@
+class Solution {
+public:
+    bool ispalindrome(string &s,int left,int right)
+    {
+        while(left<right)
+        {
+            if(s[left]!=s[right])
+                return false;
+            left++;
+            right--;
+        }
+        return true;
+    }
+    int MCM(string &s,int left,int right,vector<vector<int>> mem)
+    {
+        if(left>=right)
+            return 0;
+        
+        if(ispalindrome(s,left,right)==true)
+            return 0;
+        if(mem[left][right]!=-1)
+            return mem[left][right];
+        
+        int ans=INT_MAX;
+        for(int k=left;k<right;k++)
+        {
+            int temp=MCM(s,left,k,mem)+MCM(s,k+1,right,mem)+1;
+            
+            ans=min(ans,temp);
+        }
+        return mem[left][right]=ans;
+    }
+    int minCut(string s) 
+    {
+        vector<vector<int>> mem(s.size()+1,vector<int>(s.size()+1,-1));
+        
+        return MCM(s,0,s.size()-1,mem);
+    }
+};
