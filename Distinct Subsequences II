@@ -1,0 +1,31 @@
+class Solution {
+public:
+    int distinctSubseqII(string s) 
+    {
+        int mod=1e9+7;
+        int n = s.size();
+        
+        vector<long long int > dp(n+1,0);
+        dp[0] = 1;
+        unordered_map<char,int> mp;
+        
+        for(int i=1;i<=n;i++)
+        {
+            dp[i]=(2*dp[i-1])%mod;
+            
+            char ch=s[i-1];
+            
+            if(mp.count(ch))//searching that if element is previously seen (if seen substract previous of previous of same current character  take all possible values)
+            {
+                int j=mp[ch];
+                dp[i]=(dp[i]-dp[j-1])%mod;
+            }
+            mp[ch]=i;//put the current character in map;
+        }
+        
+        if(dp[n]<0)
+            dp[n]+=mod;
+        
+        return dp[n]-1;
+    }
+};
