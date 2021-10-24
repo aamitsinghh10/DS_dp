@@ -1,0 +1,36 @@
+class Solution {
+public:
+int longestPalindromeSubseq(string s) 
+{
+    string t=s;
+    reverse(s.begin(),s.end());//Reverse String of the Original String and store on new string
+    
+    int m=s.size();//original string s size
+    int n=t.size();// reverse string t size
+    
+    // Now Question is Similar as longest Common Subsequence
+    
+    int dp[m+1][n+1];
+    
+    for(int i=0;i<=m;i++)// when any string is zero output is zero
+        dp[i][0]=0;
+    for(int i=0;i<=n;i++)
+        dp[0][i]=0;
+    
+    for(int i=1;i<=m;i++)
+    {
+        for(int j=1;j<=n;j++)
+        {
+            if(s[i-1]==t[j-1])//when the characters of both the strings matches
+                dp[i][j]=1+dp[i-1][j-1];
+            else
+                dp[i][j]=max(dp[i][j-1],dp[i-1][j]);// when characters not match 
+        }
+    }
+    return dp[m][n];
+}
+int minInsertions(string s)//similar problem as minimum number of deletions to make string palindrome
+{
+    return (s.size()-longestPalindromeSubseq(s));
+}
+};
