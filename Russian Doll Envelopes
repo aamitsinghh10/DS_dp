@@ -25,3 +25,42 @@ public:
     return max;
     }
 };
+
+
+class Solution {
+    static bool cmp(vector<int>& a, vector<int>& b)
+    {
+        if(a[0]==b[0]) return a[1] > b[1];
+        return a[0] < b[0];
+    }
+public:
+    int maxEnvelopes(vector<vector<int>>& envelopes) 
+    {
+        int n = envelopes.size();
+    
+        sort(envelopes.begin(), envelopes.end(), cmp);
+        //As we already sorted according to width, so width is in increasing sequence.
+        //Now we have to only deal with height and for that I use binary search
+        
+        vector<int> lis;//created an lis Array
+        
+        lis.push_back(envelopes[0][1]);//inserted first element of height
+        
+        for(int i = 0;i<envelopes.size();i++)
+        {
+            int element = envelopes[i][1];
+            
+            if(lis.back()<element)//rr here i am comparing whether last element of lis is lesser than current element, if yes then push curr element in lis 
+            {
+                lis.push_back(element);
+            }
+            else // if last element of lis is greater then we find correct index of element and update the valuee accordingly
+            {
+                int idx = lower_bound(lis.begin(), lis.end(), element) - lis.begin();
+                lis[idx]=element;
+            }
+        }
+        
+        return lis.size();
+    }
+};
